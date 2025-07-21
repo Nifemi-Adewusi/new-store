@@ -27,7 +27,7 @@ function CreateUser() {
 
       {username !== "" && (
         <div>
-          <Button disabled={isSubmitting}>
+          <Button type={"primary"} disabled={isSubmitting}>
             {isSubmitting ? "Creating User..." : "Start ordering"}
           </Button>
         </div>
