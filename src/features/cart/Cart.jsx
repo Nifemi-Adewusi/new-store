@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { Link } from "react-router-dom";
 import LinkButton from "../../ui/LinkButton";
-import Button from "../../ui/Button";
+import Button, { ButtonSecondary } from "../../ui/Button";
 import CartItem from "./CartItem";
+import { useState } from "react";
 
 const fakeCart = [
   {
@@ -30,7 +31,14 @@ const fakeCart = [
 
 function Cart() {
   const cart = fakeCart;
-
+  const [newCart, setNewCart] = useState(fakeCart);
+  const handleDelete = (pizzaId) => {
+    const updatedCart = newCart.filter((item) => item.pizzaId !== pizzaId);
+    setNewCart(updatedCart);
+  };
+  const handleClearCart = () => {
+    setNewCart([]);
+  };
   return (
     <div>
       {/* <Link
@@ -44,15 +52,19 @@ function Cart() {
 
       <h2 className="mt-7 text-xl font-semibold">Your cart, %NAME%</h2>
       <ul className="divide-y divide-stone-200 border-b mt-3">
-        {cart.map((item) => (
-          <CartItem key={item.pizzaId} item={item} />
+        {newCart.map((item) => (
+          <CartItem
+            handleDelete={handleDelete}
+            key={item.pizzaId}
+            item={item}
+          />
         ))}
       </ul>
       <div className="mt-6  space-x-5">
         {/* <Link to="/order/new">Order pizzas</Link> */}
         {/* <LinkButton to="/order/new">Order pizzas</LinkButton> */}
         <Button to="/order/new">Order pizzas</Button>
-        <button>Clear cart</button>
+        <ButtonSecondary onClick={handleClearCart}>Clear cart</ButtonSecondary>
       </div>
     </div>
   );
