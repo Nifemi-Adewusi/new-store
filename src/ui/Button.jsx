@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+const className =
+  "inline-block rounded-full border-2 border-stone-300 font-semibold uppercase tracking-wide text-stone-400 transition-colors duration-300 hover:bg-stone-300 focus:bg-stone-300 focus:outline-none focus:ring focus:ring-stone-300 focus:ring-offset-2 focus:text-stone-800 disabled:cursor-not-allowed px-4 py-2.5 md:px-6 md:py-3.5";
 function Button({ disabled, children, type, to, click }) {
   const navigate = useNavigate();
+
   if (to) {
     return (
       <button
@@ -28,10 +31,7 @@ export default Button;
 
 export function ButtonSecondary({ children, click }) {
   return (
-    <button
-      onClick={click}
-      className="bg-stone-50 text-stone-800 hover:bg-stone-200 transition-colors  duration-300 focus:outline-none focus:ring focus:ring-stone-100 focus:ring-offset-2 rounded-full py-2 px-4 text-sm font-semibold uppercase"
-    >
+    <button onClick={click} className={className}>
       {children}
     </button>
   );
