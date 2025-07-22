@@ -2,9 +2,8 @@
 /* eslint-disable react/prop-types */
 import Button from "../../ui/Button";
 import { formatCurrency } from "../../utils/helpers";
-function CartItem({ item }) {
+function CartItem({ item, handleDelete }) {
   const { pizzaId, name, quantity, totalPrice } = item;
-
   return (
     <li className="py-3 sm:flex sm:items-center sm:justify-center">
       <p className="mb-1 sm:mb-0">
@@ -14,7 +13,9 @@ function CartItem({ item }) {
         <p className="text-sm font-bold sm:mt-1 sm:ml-4">
           {formatCurrency(totalPrice)}
         </p>
-        <Button type="small">Delete</Button>
+        <Button click={() => handleDelete(pizzaId)} type="small">
+          Delete
+        </Button>
       </div>
     </li>
   );
