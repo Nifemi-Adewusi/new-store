@@ -13,7 +13,7 @@ import { formatCurrency } from "../../utils/helpers";
          src={imageUrl}
          alt={name}
        />
-       <div className="flex flex-col grow">
+       <div className="flex pt-0.5 flex-col grow">
          <p className="font-medium">{name}</p>
          <p className="text-sm italic text-stone-500 capitalize">
            {ingredients.join(", ")}
