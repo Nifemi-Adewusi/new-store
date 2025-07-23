@@ -7,8 +7,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../cart/CartSlice";
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
-  //  const updateCart = useSelector
   const dispatch = useDispatch();
+
+  //  const updateCart = useSelector
+  const handleAddCart = () => {
+    const newItem = {
+      id,
+      name,
+      soldOut,
+      imageUrl,
+      unitPrice,
+      quantity: 1,
+      totalPrice: unitPrice * 1,
+    };
+    dispatch(addItem(newItem));
+  };
   return (
     <li className="sm:flex gap-4 py-2">
       <img
@@ -30,7 +43,7 @@ function MenuItem({ pizza }) {
             </p>
           )}
           {!soldOut && (
-            <Button click={() => dispatch(addItem(id))} type="small">
+            <Button click={() => handleAddCart()} type="small">
               Add To Cart
             </Button>
           )}
