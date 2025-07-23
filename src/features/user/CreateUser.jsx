@@ -1,14 +1,23 @@
 import { useState } from "react";
 import Button from "../../ui/Button";
-import { useNavigation } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateUserName } from "./userSlice";
+// import { set } from "lodash-es";
 
 function CreateUser() {
   const [username, setUsername] = useState("");
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const isSubmitting = navigation.state === "submitting";
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!username) return;
+    dispatch(updateUserName(username));
+    setUsername("");
+    navigate("/menu");
   }
 
   return (
@@ -18,7 +27,7 @@ function CreateUser() {
       </p>
 
       <input
-        className="w-72 rounded-md h-10 sm:w-96 sm:h-14 m-auto input mb-8 placeholder:uppercase"
+        className="w-72 rounded-full h-10 sm:w-96 sm:h-14 m-auto input mb-8 placeholder:uppercase"
         type="text"
         placeholder="Your full name"
         value={username}
