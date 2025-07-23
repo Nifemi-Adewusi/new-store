@@ -12,12 +12,13 @@ function CreateUser() {
   const isSubmitting = navigation.state === "submitting";
   const navigate = useNavigate();
 
+
   function handleSubmit(e) {
     e.preventDefault();
     if (!username) return;
     dispatch(updateUserName(username));
     setUsername("");
-    navigate("/menu");
+    navigate("/cart");
   }
 
   return (
