@@ -4,44 +4,44 @@ import LinkButton from "../../ui/LinkButton";
 import Button, { ButtonSecondary } from "../../ui/Button";
 import CartItem from "./CartItem";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart, getCart } from "./CartSlice";
 
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: "Vegetale",
-    quantity: 1,
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-];
+// const fakeCart = [
+//   {
+//     pizzaId: 12,
+//     name: "Mediterranean",
+//     quantity: 2,
+//     unitPrice: 16,
+//     totalPrice: 32,
+//   },
+//   {
+//     pizzaId: 6,
+//     name: "Vegetale",
+//     quantity: 1,
+//     unitPrice: 13,
+//     totalPrice: 13,
+//   },
+//   {
+//     pizzaId: 11,
+//     name: "Spinach and Mushroom",
+//     quantity: 1,
+//     unitPrice: 15,
+//     totalPrice: 15,
+//   },
+// ];
 
 function Cart() {
-  const cart = fakeCart;
-  const [newCart, setNewCart] = useState(cart);
-  const handleDelete = (pizzaId) => {
-    const updatedCart = newCart.filter((item) => item.pizzaId !== pizzaId);
-    setNewCart(updatedCart);
-  };
+  const cart = useSelector(getCart);
+  // const [newCart, setNewCart] = useState(cart);
+  const dispatch = useDispatch();
+
   const handleClearCart = () => {
-    setNewCart([]);
+    console.log("Clearing cart");
+    dispatch(clearCart());
   };
   const userName = useSelector((state) => state.user.userName);
-  console.log(userName);
+  // console.log(userName);
   return (
     <div>
       {/* <Link
@@ -53,22 +53,31 @@ function Cart() {
 
       <LinkButton to="/menu">&larr; Back to menu</LinkButton>
 
-      <h2 className="mt-7 text-xl font-semibold">Your cart, {userName}</h2>
-      <ul className="divide-y divide-stone-200 border-b mt-3">
-        {newCart.map((item) => (
-          <CartItem
-            handleDelete={handleDelete}
-            key={item.pizzaId}
-            item={item}
-          />
-        ))}
-      </ul>
-      <div className="mt-6  space-x-5">
-        {/* <Link to="/order/new">Order pizzas</Link> */}
-        {/* <LinkButton to="/order/new">Order pizzas</LinkButton> */}
-        <Button to="/order/new">Order pizzas</Button>
-        <ButtonSecondary onClick={handleClearCart}>Clear cart</ButtonSecondary>
-      </div>
+      {cart.length > 0 ? (
+        <h2 className="mt-7 text-xl font-semibold">Your cart, {userName}</h2>
+      ) : (
+        <h2 className="mt-7 text-xl font-semibold">
+          Your cart is empty {userName}
+        </h2>
+      )}
+
+      {cart.length > 0 ? (
+        <ul className="divide-y divide-stone-200 border-b mt-3">
+          {cart.map((item) => (
+            <CartItem key={item.pizzaId} item={item} />
+          ))}
+        </ul>
+      ) : (
+        <p>Start by adding items to your cart</p>
+      )}
+      {cart.length > 0 && (
+        <div className="mt-6  space-x-5">
+          <Button to="/order/new">Order pizzas</Button>
+          <ButtonSecondary click={() => handleClearCart()}>
+            Clear cart
+          </ButtonSecondary>
+        </div>
+      )}
     </div>
   );
 }
