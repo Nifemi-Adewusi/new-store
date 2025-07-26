@@ -18,7 +18,7 @@ function CreateUser() {
     if (!username) return;
     dispatch(updateUserName(username));
     setUsername("");
-    navigate("/cart");
+    navigate("/menu");
   }
 
   return (
