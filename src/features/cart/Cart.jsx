@@ -62,7 +62,7 @@ function Cart() {
       )}
 
       {cart.length > 0 ? (
-        <ul className="divide-y divide-stone-200 border-b mt-3">
+        <ul key={cart.id} className="divide-y divide-stone-200 border-b mt-3">
           {cart.map((item) => (
             <CartItem key={item.pizzaId} item={item} />
           ))}
