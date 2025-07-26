@@ -17,14 +17,22 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem(state, action) {
-      //   payload = a cart object
-      state.cart.push(action.payload);
+      const newItem = action.payload;
+      const existingItem = state.cart.find((item) => item.id === newItem.id);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.cart.push({ ...newItem, quantity: 1 }); // Ensure quantity starts at 1
+      }
     },
+
     deleteItem(state, action) {
       //   state.cart.pop(action.payload)
 
       //   payload = pizzaId
-      state.cart = state.cart.filter((item) => item.pizzaId !== action.payload);
+      state.cart = state.cart.filter((item) => item.id !== action.payload);
+      console.log(state.cart);
     },
     increaseItemQuantity(state, action) {
       //   payload = pizzaId
