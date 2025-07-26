@@ -4,7 +4,17 @@ const className =
   "inline-block rounded-full border-2 border-stone-300 font-semibold uppercase tracking-wide text-stone-400 transition-colors duration-300 hover:bg-stone-300 focus:bg-stone-300 focus:outline-none focus:ring focus:ring-stone-300 focus:ring-offset-2 focus:text-stone-800 disabled:cursor-not-allowed px-4 py-2.5 md:px-6 md:py-3.5";
 function Button({ disabled, children, type, to, click }) {
   const navigate = useNavigate();
-
+  if (type === "round") {
+    return (
+      <button
+        className="rounded-full px-2.5 py-1 md:px-3.5 md:py-2 text-sm bg-yellow-400 font-semibold text-stone-800 hover:bg-yellow-300 transition-colors duration-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed"
+        onClick={click}
+        disabled={disabled}
+      >
+        {children}
+      </button>
+    );
+  }
   if (to) {
     return (
       <button
