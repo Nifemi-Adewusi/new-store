@@ -9,6 +9,7 @@ function CartItem({ item }) {
 
   const { pizzaId, name, quantity, totalPrice } = item;
   const handleDelete = () => {
+    console.log("Deleting item with pizzaId:", pizzaId);
     dispatch(deleteItem(pizzaId));
   };
   return (
