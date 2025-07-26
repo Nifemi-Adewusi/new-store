@@ -17,14 +17,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem(state, action) {
-      const newItem = action.payload;
-      const existingItem = state.cart.find((item) => item.id === newItem.id);
-
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        state.cart.push({ ...newItem, quantity: 1 }); // Ensure quantity starts at 1
-      }
+      state.cart.push(action.payload);
     },
 
     deleteItem(state, action) {
@@ -36,14 +29,19 @@ const cartSlice = createSlice({
     },
     increaseItemQuantity(state, action) {
       //   payload = pizzaId
-      const item = state.cart.find((item) => item.pizzaId === action.payload);
+      const item = state.cart.find((item) => item.id === action.payload);
       item.quantity++;
       item.totalPrice = item.quantity * item.unitPrice;
     },
 
     decreaseItemQuantity(state, action) {
-      const item = state.cart.find((item) => item.pizzaId === action.payload);
+      const item = state.cart.find((item) => item.id === action.payload);
       item.quantity--;
+      if (item.quantity <= 0) {
+        // If quantity is 0 or less, remove the item from the cart
+        state.cart = state.cart.filter((i) => i.id !== action.payload);
+        return;
+      }
       item.totalPrice = item.quantity * item.unitPrice;
     },
     clearCart(state) {
@@ -67,5 +65,7 @@ export const getTotalCartQuantity = (state) =>
 export const getTotalCartPrice = (state) =>
   state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0);
 
+// Currying the current quantity of an item by its ID
+// This function returns a function that takes the state and returns the quantity 
 export const getCurrentQuantityById = (id) => (state) =>
   state.cart.cart.find((item) => item.id === id)?.quantity || 0;
