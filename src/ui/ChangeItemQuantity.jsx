@@ -6,11 +6,21 @@ import { decreaseItemQuantity, increaseItemQuantity } from "../features/cart/Car
 function ChangeItemQuantity({ pizzaId }) {
     const dispatch = useDispatch()
     return (
-        <div className="flex items-center gap-2">
-            <Button click={()=> dispatch(increaseItemQuantity(pizzaId))} type={"small"}>+</Button>
-            <Button click={()=> dispatch(decreaseItemQuantity(pizzaId))} type={"small"}>-</Button>
-        </div>
-    )
+      <div className="flex items-center gap-2">
+        <Button
+          type="round"
+          click={() => dispatch(increaseItemQuantity(pizzaId))}
+        >
+          +
+        </Button>
+        <Button
+          type="round"
+          click={() => dispatch(decreaseItemQuantity(pizzaId))}
+        >
+          -
+        </Button>
+      </div>
+    );
 }
 
 
