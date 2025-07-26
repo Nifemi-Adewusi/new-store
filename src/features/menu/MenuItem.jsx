@@ -4,9 +4,12 @@
 import { formatCurrency } from "../../utils/helpers";
  import Button from "../../ui/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../cart/CartSlice";
+import { addItem, getCurrentQuantityById } from "../cart/CartSlice";
+import DeleteBtn from "../../ui/DeleteBtn";
+import ChangeItemQuantity from "../../ui/ChangeItemQuantity";
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+  // console.log(pizza);
   const dispatch = useDispatch();
 
   //  const updateCart = useSelector
@@ -22,6 +25,9 @@ function MenuItem({ pizza }) {
     };
     dispatch(addItem(newItem));
   };
+  const currentQuantity = useSelector(getCurrentQuantityById(id));
+  const isInCart = currentQuantity > 0;
+
   return (
     <li className="sm:flex gap-4 py-2">
       <img
@@ -36,16 +42,45 @@ function MenuItem({ pizza }) {
         </p>
         <div className="md:mt-auto mt-2 flex items-center justify-between">
           {!soldOut ? (
-            <p className="text-sm">{formatCurrency(unitPrice)}</p>
+            <p className="text-sm">
+              {formatCurrency(
+                !currentQuantity ? unitPrice : unitPrice * currentQuantity
+              )}
+            </p>
           ) : (
             <p className="text-sm font-medium uppercase text-stone-500">
               Sold out
             </p>
           )}
-          {!soldOut && (
-            <Button click={() => handleAddCart()} type="small">
+          {/* {isInCart && <DeleteBtn pizzaId={id} />}
+          {isInCart ? (
+            <span className="text-sm text-stone-500">
+              {currentQuantity} in cart
+            </span>
+          ) : null}
+          {!soldOut &&
+            (currentQuantity <= 0 ? (
+              <Button click={() => handleAddCart()} type="small">
+                Add To Cart
+              </Button>
+            ) : null)}
+          {!soldOut && currentQuantity > 0 && (
+            <ChangeItemQuantity pizzaId={id} />
+          )} */}
+          {!soldOut && !isInCart && (
+            <Button click={handleAddCart} type="small">
               Add To Cart
             </Button>
+          )}
+
+          {isInCart && (
+            <>
+              <span className="text-sm text-stone-500">
+                {currentQuantity} in cart
+              </span>
+              <ChangeItemQuantity pizzaId={id} />
+              <DeleteBtn pizzaId={id} />
+            </>
           )}
         </div>
       </div>
