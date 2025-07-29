@@ -18,11 +18,38 @@ export async function getOrder(id) {
   return data;
 }
 
+// export async function createOrder(newOrder) {
+//   try {
+//     const res = await fetch(`${API_URL}/order`, {
+//       method: "POST",
+//       body: JSON.stringify(newOrder),
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+
+//     if (!res.ok) throw Error();
+//     const { data } = await res.json();
+//     return data;
+//   } catch {
+//     throw Error("Failed creating your order");
+//   }
+// }
+
 export async function createOrder(newOrder) {
   try {
+    const orderWithPizzaIds = {
+      ...newOrder,
+      cart: newOrder.cart.map((item) => ({
+        ...item,
+        pizzaId: item.id, // 🔁 Convert here
+        id: undefined, // 🔥 Remove the old 'id' to avoid conflict
+      })),
+    };
+
     const res = await fetch(`${API_URL}/order`, {
       method: "POST",
-      body: JSON.stringify(newOrder),
+      body: JSON.stringify(orderWithPizzaIds),
       headers: {
         "Content-Type": "application/json",
       },
@@ -35,6 +62,10 @@ export async function createOrder(newOrder) {
     throw Error("Failed creating your order");
   }
 }
+
+
+
+
 
 export async function updateOrder(id, updateObj) {
   try {
