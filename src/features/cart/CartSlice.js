@@ -30,6 +30,9 @@ const cartSlice = createSlice({
     },
     increaseItemQuantity(state, action) {
       //   payload = pizzaId
+
+      // Item returns an object in the cart that matches the pizzaId
+      // We find the item in the cart and increase its quantity by 1
       const item = state.cart.find((item) => item.id === action.payload);
       item.quantity++;
       item.totalPrice = item.quantity * item.unitPrice;
