@@ -2,14 +2,16 @@
 /* eslint-disable react/prop-types */
 import Button from "../../ui/Button";
 import { formatCurrency } from "../../utils/helpers";
-import { useDispatch } from "react-redux";
-import { deleteItem } from "./CartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteItem, getCurrentQuantityById } from "./CartSlice";
 import ChangeItemQuantity from "../../ui/ChangeItemQuantity";
 import DeleteBtn from "../../ui/DeleteBtn";
 function CartItem({ item }) {
   const dispatch = useDispatch();
 
   const { id, name, quantity, totalPrice } = item;
+  const currentQuantity = useSelector(getCurrentQuantityById(id));
+
   // console.log(pizzaId);
   return (
     <li className="py-3 sm:flex sm:items-center sm:justify-center">
@@ -20,7 +22,7 @@ function CartItem({ item }) {
         <p className="text-sm font-bold sm:mt-1 sm:ml-4">
           {formatCurrency(totalPrice)}
         </p>
-        <ChangeItemQuantity pizzaId={id} />
+        <ChangeItemQuantity pizzaId={id} currentQuantity={currentQuantity} />
         <DeleteBtn pizzaId={id} />
       </div>
     </li>
