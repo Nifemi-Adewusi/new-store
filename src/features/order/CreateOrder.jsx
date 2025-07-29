@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { createOrder } from "../../services/apiRestaurant";
+import EmptyCart from "../../ui/EmptyCart";
 import {
   Form,
   useActionData,
@@ -11,6 +12,7 @@ import {
 } from "react-router-dom";
 import Button from "../../ui/Button";
 import { useSelector } from "react-redux";
+import { getCart } from "../cart/CartSlice";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -50,9 +52,12 @@ function CreateOrder() {
   const userName = useSelector((state) => state.user.userName);
   const formErrors = useActionData();
   // const [withPriority, setWithPriority] = useState(false);
-  const cart = fakeCart;
+  // const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector(getCart);
+  // const cart = fakeCart;
+  console.log(cart);
   // const originalCart = useLoaderData();
-
+  if (!cart.length) return <EmptyCart />;
   return (
     <div className="mt-8">
       <h2>Ready to order? Let&rsquo;s go!</h2>
@@ -141,4 +146,5 @@ export async function action({ request }) {
   console.log(order);
   const newOrder = await createOrder(order);
   return redirect(`/order/${newOrder.id}`);
+  // return null;
 }
