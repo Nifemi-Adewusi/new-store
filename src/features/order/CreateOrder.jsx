@@ -11,11 +11,12 @@ import {
   useNavigation,
 } from "react-router-dom";
 import Button from "../../ui/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearCart, getCart, getTotalCartPrice } from "../cart/CartSlice";
 // import store from "";
 import store from "../../store";
 import { formatCurrency } from "../../utils/helpers";
+import { fetchAddress } from "../user/userSlice";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -29,7 +30,7 @@ function CreateOrder() {
   const handlePriorityChange = function () {
     setPriority((p) => !p);
   };
-
+  const dispatch = useDispatch();
   console.log(priority);
   // const cart = useActionData();
   const navigation = useNavigation();
@@ -37,21 +38,24 @@ function CreateOrder() {
   // const isSubmitting = true;
   const userName = useSelector((state) => state.user.userName);
   const formErrors = useActionData();
-  // const [withPriority, setWithPriority] = useState(false);
-  // const cart = useSelector((state) => state.cart.cart);
   const cart = useSelector(getCart);
-  // const cart = fakeCart;
+
   console.log(cart);
   const totalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = priority
     ? totalCartPrice + 0.2 * totalCartPrice
     : totalCartPrice;
-  // const originalCart = useLoaderData();
   if (!cart.length) return <EmptyCart />;
   return (
     <div className="mt-8">
       <h2>Ready to order? Let&rsquo;s go!</h2>
-
+      <button
+        onClick={() => {
+          dispatch(fetchAddress());
+        }}
+      >
+        Get Position
+      </button>
       <Form method="POST">
         <div className="mt-9 mb-9">
           <label className="label" htmlFor="customer">
@@ -135,7 +139,7 @@ export async function action({ request }) {
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
-    priority: data.priority === "on",
+    priority: data.priority === "true",
   };
   store.dispatch(clearCart());
   console.log(order);
