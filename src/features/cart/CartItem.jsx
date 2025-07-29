@@ -4,6 +4,7 @@ import Button from "../../ui/Button";
 import { formatCurrency } from "../../utils/helpers";
 import { useDispatch } from "react-redux";
 import { deleteItem } from "./CartSlice";
+import ChangeItemQuantity from "../../ui/ChangeItemQuantity";
 import DeleteBtn from "../../ui/DeleteBtn";
 function CartItem({ item }) {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ function CartItem({ item }) {
         <p className="text-sm font-bold sm:mt-1 sm:ml-4">
           {formatCurrency(totalPrice)}
         </p>
-
+      <ChangeItemQuantity/>
         <DeleteBtn pizzaId={id} />
       </div>
     </li>
