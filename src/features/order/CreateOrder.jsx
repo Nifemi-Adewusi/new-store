@@ -36,10 +36,15 @@ function CreateOrder() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   // const isSubmitting = true;
-  const userName = useSelector((state) => state.user.userName);
+  const {
+    userName,
+    status: addressStatus,
+    position,
+    address,
+  } = useSelector((state) => state.user);
   const formErrors = useActionData();
   const cart = useSelector(getCart);
-
+  const isLoadingAddress = addressStatus === "loading";
   console.log(cart);
   const totalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = priority
@@ -49,13 +54,13 @@ function CreateOrder() {
   return (
     <div className="mt-8">
       <h2>Ready to order? Let&rsquo;s go!</h2>
-      <button
+      {/* <button
         onClick={() => {
           dispatch(fetchAddress());
         }}
       >
         Get Position
-      </button>
+      </button> */}
       <Form method="POST">
         <div className="mt-9 mb-9">
           <label className="label" htmlFor="customer">
@@ -84,12 +89,38 @@ function CreateOrder() {
 
         <div className="mb-9">
           <label className="label">Address</label>
-          <div>
-            <input className="input" type="text" name="address" required />
+          <div className="relative">
+            <input
+              className="input mb-4"
+              type="text"
+              name="address"
+              disabled={isLoadingAddress || isSubmitting}
+              required
+              defaultValue={address}
+            />
+            {!position.latitude && !position.longitude && (
+              <span className="absolute bottom-3 sm:bottom-5  right-[2px] z-10">
+                <Button
+                  disabled={isLoadingAddress || isSubmitting}
+                  type=""
+                  click={(e) => {
+                    e.preventDefault();
+                    dispatch(fetchAddress());
+                  }}
+                >
+                  Get Address
+                </Button>
+              </span>
+            )}
+            {addressStatus === "error" && (
+              <p className="text-xs mt-2 text-red-700 bg-red-100 p-2 rounded-md">
+                {formErrors.address}
+              </p>
+            )}
           </div>
         </div>
 
-        <div className="flex items-center gap-5 mt-3 mb-3 ">
+        <div className="flex items-center gap-5 mt-8 mb-3 ">
           <input
             className="h-6 w-6 accent-yellow-400"
             type="checkbox"
