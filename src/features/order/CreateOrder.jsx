@@ -41,6 +41,7 @@ function CreateOrder() {
     status: addressStatus,
     position,
     address,
+    error: addressError,
   } = useSelector((state) => state.user);
   const formErrors = useActionData();
   const cart = useSelector(getCart);
@@ -99,7 +100,9 @@ function CreateOrder() {
               defaultValue={address}
             />
             {!position.latitude && !position.longitude && (
-              <span className="absolute bottom-3 sm:bottom-5  right-[2px] z-10">
+              <span
+                className={`${addressStatus === "error" ? "bottom-5 right-0 " : "bottom-3 sm:bottom-5  right-[2px] "} absolute`}
+              >
                 <Button
                   disabled={isLoadingAddress || isSubmitting}
                   type=""
@@ -112,12 +115,12 @@ function CreateOrder() {
                 </Button>
               </span>
             )}
-            {addressStatus === "error" && (
-              <p className="text-xs mt-2 text-red-700 bg-red-100 p-2 rounded-md">
-                {formErrors.address}
-              </p>
-            )}
           </div>
+          {addressStatus === "error" && (
+            <p className="text-xs mt-2 text-red-700 bg-red-100 p-2 rounded-md">
+              {addressError}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-5 mt-8 mb-3 ">
