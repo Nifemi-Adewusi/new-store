@@ -11,7 +11,7 @@ function CartItem({ item }) {
 
   const { id, name, quantity, totalPrice } = item;
   const currentQuantity = useSelector(getCurrentQuantityById(id));
-
+  // console.log()
   // console.log(pizzaId);
   return (
     <li className="py-3 sm:flex sm:items-center sm:justify-center">
