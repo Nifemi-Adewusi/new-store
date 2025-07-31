@@ -12,6 +12,7 @@ import { useFetcher, useLoaderData } from "react-router-dom";
 import { getOrder } from "../../services/apiRestaurant";
 import OrderItem from "./OrderItem";
 import { useEffect } from "react";
+import UpdateOrder from "./UpdateOrder";
 // import second from 'first'
 
 function Order() {
@@ -26,7 +27,6 @@ function Order() {
     },
     [fetcher]
   );
-  console.log(fetcher.data);
   const {
     id,
     status,
@@ -95,6 +95,7 @@ function Order() {
           To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
         </p>
       </div>
+      {!priority && <UpdateOrder order={order} />}
     </div>
   );
 }
